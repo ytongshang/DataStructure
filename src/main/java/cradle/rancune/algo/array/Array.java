@@ -2,8 +2,6 @@ package cradle.rancune.algo.array;
 
 import cradle.rancune.algo.Kt;
 
-import java.util.Arrays;
-
 /**
  * Created by Rancune@126.com on 2020/4/13.
  */
@@ -59,7 +57,10 @@ public class Array<T> {
         //noinspection unchecked
         T old = (T) this.array[index];
         int removed = (size - 1) - (index + 1) + 1;
-        System.arraycopy(this.array, index + 1, this.array, index, removed);
+        if (removed > 0) {
+            // 末尾移除不需要再调用
+            System.arraycopy(this.array, index + 1, this.array, index, removed);
+        }
         // gc
         this.array[--size] = null;
         return old;
@@ -79,23 +80,6 @@ public class Array<T> {
             System.arraycopy(this.array, 0, newArray, 0, size);
             this.array = newArray;
         }
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(array);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof Array)) {
-            return false;
-        }
-        Array<?> other = (Array<?>) obj;
-        return Arrays.equals(other.array, this.array);
     }
 
     @Override
