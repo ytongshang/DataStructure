@@ -38,6 +38,26 @@ fun hasCircle(node: Node?): Boolean {
     return false
 }
 
+/**
+ * 123 返回2
+ * 1234 返回3
+ */
+fun findMiddle(node: Node?): Node? {
+    if (node == null) {
+        return null
+    }
+    if (node.next == null) {
+        return  node
+    }
+    var fast: Node? = node
+    var slow: Node? = node
+    while (fast?.next != null) {
+        fast = fast.next?.next
+        slow = slow?.next
+    }
+    return slow
+}
+
 fun main() {
     println("reverseList")
     val list = Node(1)

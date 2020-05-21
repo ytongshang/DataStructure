@@ -1,8 +1,6 @@
 package cradle.rancune.algo.leetcode
 
-/**
- * Created by Rancune@126.com on 2020/4/13.
- */
+
 class Q1 {
     fun twoSum(nums: IntArray, target: Int): IntArray {
         val result = IntArray(2)
