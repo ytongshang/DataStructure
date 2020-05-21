@@ -4,7 +4,7 @@ package cradle.rancune.algo.leetcode
  * Created by Rancune@126.com on 2020/4/13.
  * https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
  */
-class Q3 {
+class Q26 {
     fun removeDuplicates(nums: IntArray): Int {
         val size = nums.size
         if (size <= 1) {

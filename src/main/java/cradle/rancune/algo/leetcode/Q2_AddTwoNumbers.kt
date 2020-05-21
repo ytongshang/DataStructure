@@ -9,6 +9,27 @@ package cradle.rancune.algo.leetcode
 
 class ListNode(var `val`: Int) {
     var next: ListNode? = null
+
+    constructor(`val`: Int, next: ListNode?) : this(`val`) {
+        this.next = next
+    }
+
+    override fun toString(): String {
+        val builder = StringBuilder()
+        builder.append("{ ")
+        builder.append("${this.`val`} ,")
+        var n = next
+        while (n != null) {
+            builder.append("${n.`val`} ")
+            if (n.next == null) {
+                builder.append("}")
+            } else {
+                builder.append(", ")
+            }
+            n = n.next
+        }
+        return builder.toString()
+    }
 }
 
 class Q2 {

@@ -7,7 +7,7 @@ package cradle.rancune.algo.leetcode
 class Q11 {
     // 面积 = 宽*高
     // 而高取决于height小的那个值
-    // 最开始在两端，宽最大，所以只能矮向高的靠，否则高不变，宽变小了，面积肯定变小了
+    // 最开始在两端，宽最大，所以只能矮向高的靠，否则高不变或变更小，宽变小了，面积肯定变小了
     fun maxArea(height: IntArray): Int {
         val size = height.size
         if (size <= 1) {
