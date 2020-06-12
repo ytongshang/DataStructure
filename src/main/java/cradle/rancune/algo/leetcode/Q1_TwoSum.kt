@@ -12,8 +12,8 @@ class Q1 {
             val another = target - value
             val index = map[another]
             if (index != null) {
-                result[0] = i
-                result[1] = index
+                result[0] = index
+                result[1] = i
                 return result
             } else {
                 map[value] = i
