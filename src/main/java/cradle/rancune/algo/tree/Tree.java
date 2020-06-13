@@ -9,31 +9,22 @@ import java.util.Stack;
  * https://blog.csdn.net/zhangxiangdavaid/article/details/37115355
  */
 public class Tree {
-    private static class Node {
-        Node left;
-        Node right;
-        int value;
 
-        Node(int value) {
-            this.value = value;
-        }
-    }
-
-    private static void preOrder(Node node) {
+    private static void preOrder(TreeNode node) {
         if (node != null) {
-            System.out.print(node.value);
+            System.out.print(node.val);
             System.out.print(" ");
             preOrder(node.left);
             preOrder(node.right);
         }
     }
 
-    private static void preOrder2(Node node) {
+    private static void preOrder2(TreeNode node) {
         if (node == null) {
             return;
         }
-        Stack<Node> stack = new Stack<>();
-        Node p = node;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode p = node;
         while (!stack.empty() || p != null) {
             while (p != null) {
                 print(p);
@@ -47,7 +38,7 @@ public class Tree {
         }
     }
 
-    private static void inOrder(Node node) {
+    private static void inOrder(TreeNode node) {
         if (node == null) {
             return;
         }
@@ -56,12 +47,12 @@ public class Tree {
         inOrder(node.right);
     }
 
-    private static void inOrder2(Node node) {
+    private static void inOrder2(TreeNode node) {
         if (node == null) {
             return;
         }
-        Stack<Node> stack = new Stack<>();
-        Node p = node;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode p = node;
         while (p != null || !stack.empty()) {
             while (p != null) {
                 stack.push(p);
@@ -75,7 +66,7 @@ public class Tree {
         }
     }
 
-    private static void postOrder(Node node) {
+    private static void postOrder(TreeNode node) {
         if (node == null) {
             return;
         }
@@ -84,13 +75,13 @@ public class Tree {
         print(node);
     }
 
-    private static void postOrder2(Node node) {
+    private static void postOrder2(TreeNode node) {
         if (node == null) {
             return;
         }
-        Node p = node;
-        Node lastVisit = null;
-        Stack<Node> stack = new Stack<>();
+        TreeNode p = node;
+        TreeNode lastVisit = null;
+        Stack<TreeNode> stack = new Stack<>();
         //先把pCur移动到左子树最下边
         while (p != null) {
             stack.push(p);
@@ -115,14 +106,14 @@ public class Tree {
         }
     }
 
-    private static void level(Node node) {
+    private static void level(TreeNode node) {
         if (node == null) {
             return;
         }
-        Queue<Node> queue = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(node);
         while (!queue.isEmpty()) {
-            Node n = queue.poll();
+            TreeNode n = queue.poll();
             print(n);
             if (n.left != null) {
                 queue.offer(n.left);
@@ -133,21 +124,21 @@ public class Tree {
         }
     }
 
-    static void print(Node node) {
+    static void print(TreeNode node) {
         if (node != null) {
-            System.out.print(node.value);
+            System.out.print(node.val);
             System.out.print(" ");
         }
     }
 
     public static void main(String[] args) {
-        Node node = new Node(1);
-        node.left = new Node(2);
-        node.right = new Node(3);
-        node.left.left = new Node(4);
-        node.left.right = new Node(5);
-        node.right.left = new Node(6);
-        node.right.right = new Node(7);
+        TreeNode node = new TreeNode(1);
+        node.left = new TreeNode(2);
+        node.right = new TreeNode(3);
+        node.left.left = new TreeNode(4);
+        node.left.right = new TreeNode(5);
+        node.right.left = new TreeNode(6);
+        node.right.right = new TreeNode(7);
 
 //        level(node);
 //        System.out.println();

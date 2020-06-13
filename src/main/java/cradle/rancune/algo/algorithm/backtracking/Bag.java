@@ -16,7 +16,6 @@ public class Bag {
             }
             return;
         }
-        //第n个背包即使装了没超过最大值，也不一定要装
         f(index + 1, weight);
         if ((weight + bags[index]) <= maxWeight) {
             f(index + 1, weight + bags[index]);
