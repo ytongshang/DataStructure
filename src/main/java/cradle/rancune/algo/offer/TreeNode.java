@@ -1,4 +1,4 @@
-package cradle.rancune.algo.tree;
+package cradle.rancune.algo.offer;
 
 public class TreeNode {
     public TreeNode left;

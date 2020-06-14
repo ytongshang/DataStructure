@@ -1,13 +1,8 @@
 package cradle.rancune.algo.offer;
 
-import cradle.rancune.algo.tree.TreeNode;
+import java.util.*;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Queue;
 
-@SuppressWarnings("DuplicatedCode")
 public class Tree {
     public static void preOrder(TreeNode node) {
         if (node == null) {
@@ -103,7 +98,7 @@ public class Tree {
         while (!queue.isEmpty()) {
             int size = queue.size();
             TreeNode n = null;
-            for(int i = 0; i < size; i ++) {
+            for (int i = 0; i < size; i++) {
                 if (left2Right) {
                     n = queue.removeFirst();
                     if (n.left != null) {
@@ -204,6 +199,130 @@ public class Tree {
         mirrorTree(root.left);
         mirrorTree(root.right);
         return root;
+    }
+
+    // 面试题27 对称二叉树
+    // https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isSymmetricInternal(root.left, root.right);
+    }
+
+    private boolean isSymmetricInternal(TreeNode a, TreeNode b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        return a.val == b.val && isSymmetricInternal(a.left, b.right)
+                && isSymmetricInternal(a.right, b.left);
+    }
+
+    // 面试题32_1 从上到下打印二叉树
+    // https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/
+    public int[] levelOrder(TreeNode root) {
+        if (root == null) {
+            return new int[0];
+        }
+        if (root.left == null && root.right == null) {
+            return new int[]{root.val};
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<Integer> list = new ArrayList<>();
+        queue.offer(root);
+        TreeNode node = null;
+        while (!queue.isEmpty()) {
+            node = queue.poll();
+            list.add(node.val);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        int[] result = new int[list.size()];
+        for (int i = 0; i < list.size(); ++i) {
+            result[i] = list.get(i);
+        }
+        return result;
+    }
+
+    // 面试题32_2 从上到下打印二叉树
+    // https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/
+    public List<List<Integer>> levelOrder2(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        if (root.left == null && root.right == null) {
+            List<Integer> list = new ArrayList<>();
+            list.add(root.val);
+            result.add(list);
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        TreeNode node = null;
+        while (!queue.isEmpty()) {
+            List<Integer> list = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; ++i) {
+                node = queue.poll();
+                list.add(node.val);
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+            result.add(list);
+        }
+        return result;
+    }
+
+    // 面试题32_3 从上到下打印二叉树
+    // https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/
+    public List<List<Integer>> levelOrder3(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        if (root.left == null && root.right == null) {
+            List<Integer> list = new ArrayList<>();
+            list.add(root.val);
+            result.add(list);
+            return result;
+        }
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        TreeNode n = null;
+        boolean left2Right = true;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            LinkedList<Integer> list = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                n = queue.removeFirst();
+                if (left2Right) {
+                   list.addLast(n.val);
+                } else {
+                    list.addFirst(n.val);
+                }
+                if (n.left != null) {
+                    queue.addLast(n.left);
+                }
+                if (n.right != null) {
+                    queue.addLast(n.right);
+                }
+            }
+            result.add(list);
+            left2Right = !left2Right;
+        }
+        return result;
     }
 
     public static void main(String[] args) {
