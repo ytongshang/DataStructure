@@ -1,5 +1,9 @@
 package cradle.rancune.algo.offer;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
+
 public class BinarySearchTree {
     public static class Node {
         public int val;
@@ -198,6 +202,40 @@ public class BinarySearchTree {
                 && verifyPostOrderInternal(postOrder, left + 1, end - 1);
     }
 
+    // 面试题34 二叉树中和为某一值的路径
+    // https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/
+    // 回溯算法
+    public static class Path2Sum {
+        private List<List<Integer>> result = new LinkedList<>();
+        private LinkedList<Integer> path = new LinkedList<>();
+
+        public List<List<Integer>> pathSum(TreeNode root, int sum) {
+            if (root == null) {
+                return result;
+            }
+            pathSumInternal(root, sum);
+            return result;
+        }
+
+        public void pathSumInternal(TreeNode root, int sum) {
+            if (root == null) {
+                // 到达了叶子节点
+                return;
+            }
+            path.add(root.val);
+            sum = sum - root.val;
+            if (sum == 0 && root.left == null && root.right == null) {
+                // 是root到叶子的路径
+                result.add(new LinkedList<>(path));
+            }
+            pathSumInternal(root.left, sum);
+            pathSumInternal(root.right, sum);
+            path.removeLast();
+        }
+    }
+
+    // 面试题36 二叉搜索树与双向链表
+    // https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/
     // 面试题36 二叉搜索树与双向链表
     // https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/
     public static class Tree2DoublyList {
@@ -229,6 +267,71 @@ public class BinarySearchTree {
             treeToDoublyListInternal(node.right);
         }
     }
+
+    // 面试题54 二叉搜索树的第k大节点
+    // https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/
+    // 二叉搜索数中序是递增的，左中右递增，右中左递减
+    public int kthLargest(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<>();
+        int count = 0;
+        TreeNode p = root;
+        while (p != null || !stack.isEmpty()) {
+            while (p != null) {
+                stack.push(p);
+                p = p.right;
+            }
+
+            if (!stack.isEmpty()) {
+                p = stack.pop();
+                count++;
+                if (count == k) {
+                    return p.val;
+                }
+                p = p.left;
+            }
+        }
+        return -1;
+    }
+
+    public static class KthLargest {
+        private int count = 0;
+        private TreeNode result = null;
+
+        public int kthLargest(TreeNode root, int k) {
+            kthLargestInternal(root, k);
+            return result.val;
+        }
+
+        private void kthLargestInternal(TreeNode node, int k) {
+            if (node == null) {
+                return;
+            }
+            kthLargestInternal(node.right, k);
+            if (count == k) {
+                return;
+            }
+            count++;
+            if (count == k) {
+                result = node;
+            }
+            kthLargestInternal(node.left, k);
+        }
+    }
+
+    // 面试题55 二叉树的深度
+    // https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+        return Math.max(left, right) + 1;
+    }
+
+
+
+
 
     // 面试题68-1 二叉搜索树的最近公共祖先
     // https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/
