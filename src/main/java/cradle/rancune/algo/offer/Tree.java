@@ -308,7 +308,7 @@ public class Tree {
             for (int i = 0; i < size; i++) {
                 n = queue.removeFirst();
                 if (left2Right) {
-                   list.addLast(n.val);
+                    list.addLast(n.val);
                 } else {
                     list.addFirst(n.val);
                 }
@@ -323,6 +323,123 @@ public class Tree {
             left2Right = !left2Right;
         }
         return result;
+    }
+
+    public static class Codec {
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            if (root == null) {
+                return "#";
+            }
+            StringBuilder builder = new StringBuilder();
+            preOrder(root, builder);
+            return builder.toString();
+        }
+
+        private void preOrder(TreeNode node, StringBuilder builder) {
+            if (node == null) {
+                builder.append("#,");
+                return;
+            }
+            builder.append(node.val);
+            builder.append(",");
+            preOrder(node.left, builder);
+            preOrder(node.right, builder);
+        }
+
+        // Decodes your encoded data to tree.
+        private int start = 0;
+
+        public TreeNode deserialize(String data) {
+            if ("#".equals(data)) {
+                return null;
+            }
+            String[] splits = data.split(",");
+            return build(splits);
+        }
+
+        private TreeNode build(String[] splits) {
+            if ("#".equals(splits[start])) {
+                start++;
+                return null;
+            }
+            TreeNode node = new TreeNode(Integer.parseInt(splits[start]));
+            start++;
+            node.left = build(splits);
+            node.right = build(splits);
+            return node;
+        }
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        int height = isBalancedInternal(root);
+        return height != -1;
+    }
+
+    private static int isBalancedInternal(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        int left = isBalancedInternal(node.left);
+        if (left == -1) {
+            return -1;
+        }
+        int right = isBalancedInternal(node.right);
+        if (right == -1) {
+            return -1;
+        }
+        return Math.abs(left - right) <= 1 ? Math.max(left, right) + 1 : -1;
+    }
+
+    // 面试题34 二叉树中和为某一值的路径
+    // https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/
+    // 回溯算法
+    public static class Path2Sum {
+        private List<List<Integer>> result = new LinkedList<>();
+        private LinkedList<Integer> path = new LinkedList<>();
+
+        public List<List<Integer>> pathSum(TreeNode root, int sum) {
+            if (root == null) {
+                return result;
+            }
+            pathSumInternal(root, sum);
+            return result;
+        }
+
+        public void pathSumInternal(TreeNode root, int sum) {
+            if (root == null) {
+                // 到达了叶子节点
+                return;
+            }
+            path.add(root.val);
+            sum = sum - root.val;
+            if (sum == 0 && root.left == null && root.right == null) {
+                // 是root到叶子的路径
+                result.add(new LinkedList<>(path));
+            }
+            pathSumInternal(root.left, sum);
+            pathSumInternal(root.right, sum);
+            path.removeLast();
+        }
+    }
+
+    // 面试题68 - II. 二叉树的最近公共祖先
+    // https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/
+    // 回溯算法
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if (left == null) {
+            return right;
+        }
+        if (right == null) {
+            return left;
+        }
+        return root;
     }
 
     public static void main(String[] args) {
