@@ -1,7 +1,5 @@
 package cradle.rancune.algo.offer;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Stack;
 
 public class BinarySearchTree {
@@ -202,40 +200,6 @@ public class BinarySearchTree {
                 && verifyPostOrderInternal(postOrder, left + 1, end - 1);
     }
 
-    // 面试题34 二叉树中和为某一值的路径
-    // https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/
-    // 回溯算法
-    public static class Path2Sum {
-        private List<List<Integer>> result = new LinkedList<>();
-        private LinkedList<Integer> path = new LinkedList<>();
-
-        public List<List<Integer>> pathSum(TreeNode root, int sum) {
-            if (root == null) {
-                return result;
-            }
-            pathSumInternal(root, sum);
-            return result;
-        }
-
-        public void pathSumInternal(TreeNode root, int sum) {
-            if (root == null) {
-                // 到达了叶子节点
-                return;
-            }
-            path.add(root.val);
-            sum = sum - root.val;
-            if (sum == 0 && root.left == null && root.right == null) {
-                // 是root到叶子的路径
-                result.add(new LinkedList<>(path));
-            }
-            pathSumInternal(root.left, sum);
-            pathSumInternal(root.right, sum);
-            path.removeLast();
-        }
-    }
-
-    // 面试题36 二叉搜索树与双向链表
-    // https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/
     // 面试题36 二叉搜索树与双向链表
     // https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/
     public static class Tree2DoublyList {
@@ -328,10 +292,6 @@ public class BinarySearchTree {
         int right = maxDepth(root.right);
         return Math.max(left, right) + 1;
     }
-
-
-
-
 
     // 面试题68-1 二叉搜索树的最近公共祖先
     // https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/

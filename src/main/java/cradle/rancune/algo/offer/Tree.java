@@ -426,7 +426,9 @@ public class Tree {
 
     // 面试题68 - II. 二叉树的最近公共祖先
     // https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/
-    // 回溯算法
+    //  p 和 qq 在 rootroot 的子树中，且分列 rootroot 的 异侧（即分别在左、右子树中）；
+    //  p = rootp=root ，且 qq 在 rootroot 的左或右子树中；
+    //  q = rootq=root ，且 pp 在 rootroot 的左或右子树中
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null || root == p || root == q) {
             return root;
