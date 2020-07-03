@@ -8,16 +8,16 @@ public class Tree {
         if (node == null) {
             return;
         }
-        Deque<TreeNode> deque = new ArrayDeque<>();
+        Stack<TreeNode> deque = new Stack<>();
         TreeNode p = node;
         while (!deque.isEmpty() || p != null) {
             while (p != null) {
                 System.out.print(p.val + " ");
-                deque.addLast(p);
+                deque.push(p);
                 p = p.left;
             }
             if (!deque.isEmpty()) {
-                p = deque.removeLast();
+                p = deque.pop();
                 p = p.right;
             }
         }
@@ -28,14 +28,14 @@ public class Tree {
             return;
         }
         TreeNode p = node;
-        Deque<TreeNode> deque = new ArrayDeque<>();
+        Stack<TreeNode> deque = new Stack<>();
         while (p != null || !deque.isEmpty()) {
             while (p != null) {
-                deque.addLast(p);
+                deque.push(p);
                 p = p.left;
             }
             if (!deque.isEmpty()) {
-                p = deque.removeLast();
+                p = deque.pop();
                 System.out.print(p.val + " ");
                 p = p.right;
             }
@@ -46,23 +46,23 @@ public class Tree {
         if (node == null) {
             return;
         }
-        Deque<TreeNode> deque = new ArrayDeque<>();
+        Stack<TreeNode> deque = new Stack<>();
         TreeNode lastVisit = null;
         TreeNode p = node;
         while (p != null) {
-            deque.addLast(p);
+            deque.push(p);
             p = p.left;
         }
         while (!deque.isEmpty()) {
-            p = deque.removeLast();
+            p = deque.pop();
             if (p.right == null || p.right == lastVisit) {
                 System.out.print(p.val + " ");
                 lastVisit = p;
             } else {
-                deque.addLast(p);
+                deque.push(p);
                 p = p.right;
                 while (p != null) {
-                    deque.addLast(p);
+                    deque.push(p);
                     p = p.left;
                 }
             }
@@ -426,11 +426,14 @@ public class Tree {
 
     // 面试题68 - II. 二叉树的最近公共祖先
     // https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/
-    //  p 和 qq 在 rootroot 的子树中，且分列 rootroot 的 异侧（即分别在左、右子树中）；
-    //  p = rootp=root ，且 qq 在 rootroot 的左或右子树中；
-    //  q = rootq=root ，且 pp 在 rootroot 的左或右子树中
+    //  p 和 q 在 root 的子树中，且分列 root 的 异侧（即分别在左、右子树中）；
+    //  p=root ，且 q 在 root 的左或右子树中；
+    //  q=root ，且 p 在 root 的左或右子树中
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q) {
+        if (root == null) {
+            return null;
+        }
+        if (root == p || root == q) {
             return root;
         }
         TreeNode left = lowestCommonAncestor(root.left, p, q);
