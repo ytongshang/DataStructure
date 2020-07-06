@@ -1,8 +1,8 @@
 package cradle.rancune.algo.offer;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+@SuppressWarnings("DuplicatedCode")
 public class Array {
 
     // int[][] ints = new int[3][4];
@@ -112,7 +112,6 @@ public class Array {
     }
 
     private int merge(int[] nums, int start, int end, int middle, int[] temp) {
-        if (end + 1 - start >= 0) System.arraycopy(nums, start, temp, start, end + 1 - start);
         int i = middle;
         int j = end;
         int k = end;
@@ -185,5 +184,235 @@ public class Array {
             }
         }
         return nums;
+    }
+
+    // 剑指 Offer 40. 最小的k个数
+    // https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/
+    // 前k小，大顶堆
+    // 前k大，小顶堆
+    public int[] getLeastNumbers(int[] arr, int k) {
+        if (k <= 0) {
+            return new int[0];
+        }
+        if (arr == null) {
+            return new int[0];
+        }
+        int length = arr.length;
+        if (length < k) {
+            return arr;
+        }
+        // 大顶堆
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) -> o2 - o1);
+        for (int i = 0; i < k; i++) {
+            queue.offer(arr[i]);
+        }
+        for (int i = k; i < length; i++) {
+            if (arr[i] < queue.peek()) {
+                queue.poll();
+                queue.offer(arr[i]);
+            }
+        }
+        int[] result = new int[k];
+        int i = 0;
+        for (Integer item : queue) {
+            result[i++] = item;
+        }
+        return result;
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    public static int partition(int[] array, int left, int right) {
+        int pivot = array[left];
+        while (left < right) {
+            while (left < right && array[right] >= pivot) {
+                right--;
+            }
+            if (left < right) {
+                array[left++] = array[right];
+            }
+            while (left < right && array[left] <= pivot) {
+                left++;
+            }
+            if (left < right) {
+                array[right--] = array[left];
+            }
+        }
+        array[left] = pivot;
+        return left;
+    }
+
+    // 相比较于优先队列的实现
+    // 快速选择需要全部加进内存，不适用于流数据
+    // 会改变原来的数据
+    public int[] getLeastNumbers2(int[] arr, int k) {
+        if (arr == null || k <= 0) {
+            return new int[0];
+        }
+        int length = arr.length;
+        if (length <= k) {
+            return arr;
+        }
+        findLeastK(arr, 0, arr.length - 1, k);
+        int[] result = new int[k];
+        System.arraycopy(arr, 0, result, 0, k);
+        return result;
+    }
+
+    private void findLeastK(int[] arr, int left, int right, int k) {
+        int pivot = partition(arr, left, right);
+        if (pivot < k) {
+            findLeastK(arr, pivot + 1, right, k);
+        } else if (pivot > k) {
+            findLeastK(arr, left, pivot - 1, k);
+        }
+    }
+
+    // 剑指 Offer 42. 连续子数组的最大和
+    // https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/
+    public int maxSubArray(int[] nums) {
+        if (nums == null) {
+            return 0;
+        }
+        int size = nums.length;
+        if (size == 1) {
+            return nums[0];
+        }
+        int max = nums[0];
+        int sum = nums[0];
+        for (int num : nums) {
+            sum += num;
+            if (sum < 0) {
+                sum = 0;
+            } else {
+                max = Math.max(max, sum);
+            }
+        }
+        return max;
+    }
+
+    // 剑指 Offer 45. 把数组排成最小的数
+    // https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/
+    // 3, 30, 34, 5, 9
+    // 最终生成的数字的位数一样，要看第一位，首先要从 3, 30, 34中选一个数字
+    // 然后看第二位，会是 30 < 3 < 34
+    public String minNumber(int[] nums) {
+        int size = nums.length;
+        if (size == 1) {
+            return String.valueOf(nums[0]);
+        }
+        String[] strs = new String[size];
+        for (int i = 0; i < size; i++) {
+            strs[i] = String.valueOf(nums[i]);
+        }
+        Arrays.sort(strs, (o1, o2) -> (o1 + o2).compareTo(o2 + o1));
+        StringBuilder builder = new StringBuilder();
+        for (String str : strs) {
+            builder.append(str);
+        }
+        return builder.toString();
+    }
+
+    // 剑指 Offer 53 - I. 在排序数组中查找数字 I
+    // https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/
+    public int search(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int size = nums.length;
+        if (size == 1) {
+            return nums[0] == target ? 1 : 0;
+        }
+        int first = firstIndex(nums, 0, size - 1, target);
+        int last = lastIndex(nums, 0, size - 1, target);
+        if (first == -1 || last == -1) {
+            return 0;
+        }
+        return last - first + 1;
+    }
+
+    private static int firstIndex(int[] nums, int left, int right, int target) {
+        while (left <= right) {
+            int middle = left + (right - left) / 2;
+            if (nums[middle] > target) {
+                right = middle - 1;
+            } else if (nums[middle] < target) {
+                left = middle + 1;
+            } else {
+                if (middle == 0 || nums[middle - 1] != target) {
+                    return middle;
+                } else {
+                    right = middle - 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private static int lastIndex(int[] nums, int left, int right, int target) {
+        while (left <= right) {
+            int middle = left + (right - left) / 2;
+            if (nums[middle] > target) {
+                right = middle - 1;
+            } else if (nums[middle] < target) {
+                left = middle + 1;
+            } else {
+                if (middle == right || nums[middle + 1] != target) {
+                    return middle;
+                } else {
+                    left = middle + 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    // 剑指 Offer 53 - II. 0～n-1中缺失的数字
+    // https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/solution/er-fen-cha-zhao-by-lhdlhd/
+    public int missingNumber(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            int middle = left + (right - left) >>> 1;
+            if (nums[middle] == middle) {
+                // 中间相等
+                if (middle == nums.length - 1) {
+                    return middle + 1;
+                } else {
+                    left = middle + 1;
+                }
+            } else {
+                if (middle == 0 || nums[middle - 1] == middle - 1) {
+                    return middle;
+                } else {
+                    right = middle - 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+
+    // https://mp.weixin.qq.com/s/63pmj6Vxbec1u-iEZnbAxw
+    // https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/solution/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-by-leetcode/
+    // 剑指 Offer 56 - I. 数组中数字出现的次数
+    public int[] singleNumbers(int[] nums) {
+        int res = 0;
+        for (int num : nums) {
+            res ^= num;
+        }
+        int mask = 1;
+        while ((res & mask) == 0) {
+            mask = mask << 1;
+        }
+        int a = 0;
+        int b = 0;
+        for (int num : nums) {
+            if ((num & mask) == 0) {
+                a ^= num;
+            } else {
+                b ^= num;
+            }
+        }
+        return new int[]{a, b};
     }
 }

@@ -3,6 +3,8 @@ package cradle.rancune.algo.offer;
 import java.util.*;
 
 public class StackRelated {
+    // 剑指 Offer 09. 用两个栈实现队列
+    // https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/
     class CQueue {
         private final Stack<Integer> stackA = new Stack<>();
         private final Stack<Integer> stackB = new Stack<>();
