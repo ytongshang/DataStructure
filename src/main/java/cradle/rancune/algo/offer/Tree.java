@@ -201,6 +201,34 @@ public class Tree {
         return root;
     }
 
+    public TreeNode mirrorTree2(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        if (root.left == null && root.right == null) {
+            return root;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        TreeNode n = null;
+        TreeNode temp = null;
+        while (!queue.isEmpty()) {
+            n = queue.poll();
+            if (n.left != null || n.right != null) {
+                temp = n.left;
+                n.left = n.right;
+                n.right = temp;
+            }
+            if (n.left != null) {
+                queue.add(n.left);
+            }
+            if (n.right != null) {
+                queue.add(n.right);
+            }
+        }
+        return root;
+    }
+
     // 面试题27 对称二叉树
     // https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/
     public boolean isSymmetric(TreeNode root) {

@@ -24,10 +24,7 @@ class Print {
                     if (count <= 100) {
                         println("Thread $name, count: ${count++}")
                     }
-                    try {
-                        lock.notifyAll()
-                    } catch (e: Exception) {
-                    }
+                    lock.notifyAll()
                 }
             }
         }
@@ -92,6 +89,8 @@ class Test2 {
         t3?.start()
     }
 }
+
+
 
 fun main() {
     //Print().start()

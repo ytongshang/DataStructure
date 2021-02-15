@@ -279,12 +279,14 @@ public class Array {
         }
         int max = nums[0];
         int sum = nums[0];
-        for (int num : nums) {
-            sum += num;
-            if (sum < 0) {
-                sum = 0;
+        for (int i = 1; i < size; i++) {
+            if (sum > 0) {
+                sum += nums[i];
+                if (sum > max) {
+                    max = sum;
+                }
             } else {
-                max = Math.max(max, sum);
+                sum = nums[i];
             }
         }
         return max;
@@ -375,11 +377,7 @@ public class Array {
             int middle = left + (right - left) >>> 1;
             if (nums[middle] == middle) {
                 // 中间相等
-                if (middle == nums.length - 1) {
-                    return middle + 1;
-                } else {
-                    left = middle + 1;
-                }
+                left++;
             } else {
                 if (middle == 0 || nums[middle - 1] == middle - 1) {
                     return middle;
